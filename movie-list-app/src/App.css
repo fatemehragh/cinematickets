@@ -60,18 +60,18 @@
   margin-bottom: 30px;
 }
 html {
-  direction: rtl; /* Set global direction to RTL */
+  direction: rtl;
 }
 
 body {
-  font-family: 'Vazir', sans-serif; /* Using Vazir font for Persian typography */
+  font-family: 'Vazir', sans-serif;
 }
 
 .navbar {
-  background-color: #dc3545 !important; /* Bootstrap red color */
+  background-color: #dc3545 !important;
 }
 
 .btn-primary {
-  background-color: #dc3545 !important; /* Use same red color for primary buttons */
+  background-color: #dc3545 !important;
   border-color: #dc3545 !important;
 }

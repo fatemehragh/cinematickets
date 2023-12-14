@@ -28,14 +28,11 @@ const MovieDetails = () => {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        // Fetch all movies
         fetch('https://cinema-ticket-api.liara.run/api/v1/movies/')
             .then(response => response.json())
             .then(data => setMovies(data))
             .catch(error => console.error('Error fetching movies:', error));
     }, []);
-
-    // Find the movie with the matching ID
     const movieDetails = movies.find(movie => String(movie.id) === movieId);
 
     if (!movieDetails) {
@@ -122,7 +119,6 @@ const App = () => {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        // Replace the API URL below with your actual API URL
         fetch('https://cinema-ticket-api.liara.run/api/v1/movies/')
             .then(response => response.json())
             .then(data => setMovies(data))
