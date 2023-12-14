@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
 import './App.css'
+import FAQ from "./FAQ";
 
 const MovieCard = ({ movie }) => (
     <div className="col-md-4 mb-4">
@@ -38,7 +39,7 @@ const MovieDetails = () => {
     const movieDetails = movies.find(movie => String(movie.id) === movieId);
 
     if (!movieDetails) {
-        return <div>Loading...</div>;
+        return <div>در حال بارگذاری...</div>;
     }
 
     return (
@@ -58,7 +59,7 @@ const MovieDetails = () => {
                     <ul className="mb-3">
                         {movieDetails.actors.map(actor => (
                             <li key={actor.id}>
-                                {actor.name} ({actor.sex === 'm' ? 'مرد' : 'زن'})
+                                {actor.name}
                             </li>
                         ))}
                     </ul>
@@ -101,8 +102,8 @@ const NavbarComponent = () => (
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/">
-                            همه فیلم‌ها
+                        <Link className="nav-link" to="/faq">
+                           سوالات متداول
                         </Link>
                     </li>
                 </ul>
@@ -136,6 +137,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<MovieList movies={movies} />} />
                     <Route path="/movie/:id" element={<MovieDetails />} />
+                    <Route path="/FAQ" element={<FAQ />} />
                 </Routes>
             </div>
         </BrowserRouter>
