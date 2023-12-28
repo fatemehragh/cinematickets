@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
 import './App.css'
 import FAQ from "./FAQ";
+import Contact from './Contact-us';
+
 
 const MovieCard = ({ movie }) => (
     <div className="col-md-4 mb-4">
@@ -105,6 +107,9 @@ const NavbarComponent = () => (
                     </li>
                 </ul>
             </div>
+            <Link className="nav-link" to="/Contact-us">
+                تماس با ما
+            </Link>
         </div>
     </nav>
 );
@@ -123,7 +128,7 @@ const Footer = () => (
                     <ul className="list-unstyled">
                         <li><Link to="/">صفحه اصلی</Link></li>
                         <li><Link to="/faq">سوالات متداول</Link></li>
-                        <li><Link to="/faq">تماس با ما</Link></li>
+                        <li><Link to="/Contact-us">تماس با ما</Link></li>
                     </ul>
                 </div>
                 <div className="col-md-4">
@@ -153,6 +158,7 @@ const App = () => {
                     <Route path="/" element={<MovieList movies={movies} />} />
                     <Route path="/movie/:id" element={<MovieDetails />} />
                     <Route path="/FAQ" element={<FAQ />} />
+                    <Route path="/Contact-us" element={<Contact />} /> {/* Add the Contact route */}
                 </Routes>
             </div>
             <Footer />
