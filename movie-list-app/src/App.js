@@ -114,7 +114,26 @@ const HeroBanner = () => (
         <h1 className="display-4">سینما تیکت</h1>
     </div>
 );
-
+const Footer = () => (
+    <footer className="bg-dark text-light text-center py-3">
+        <div className="container">
+            <div className="row">
+                <div className="col-md-4">
+                    <h5>لینک‌های مفید</h5>
+                    <ul className="list-unstyled">
+                        <li><Link to="/">صفحه اصلی</Link></li>
+                        <li><Link to="/faq">سوالات متداول</Link></li>
+                        <li><Link to="/faq">تماس با ما</Link></li>
+                    </ul>
+                </div>
+                <div className="col-md-4">
+                    <h5>حقوق این سایت</h5>
+                    <p>&copy; 2023 Cinema Ticket. تمامی حقوق محفوظ است.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+);
 const App = () => {
     const [movies, setMovies] = useState([]);
 
@@ -136,6 +155,7 @@ const App = () => {
                     <Route path="/FAQ" element={<FAQ />} />
                 </Routes>
             </div>
+            <Footer />
         </BrowserRouter>
     );
 };
