@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Select from 'react-select';
 import { BrowserRouter, Routes, Route, Link, useParams,useNavigate } from "react-router-dom";
 import './App.css'
 import FAQ from "./FAQ";
@@ -67,7 +68,7 @@ const MovieDetails = () => {
                     <p className="mb-3">
                         <strong>امتیاز:</strong> {movieDetails.rate}
                     </p>
-                    <p className="mb-3">سینما: {movieDetails.cinemas.length > 0 ? movieDetails.cinemas.map(cinema => cinema.name).join(', ') : 'نامشخص'}</p>
+                    <p className="mb-3"><strong>سینما:</strong> {movieDetails.cinemas.length > 0 ? movieDetails.cinemas.map(cinema => cinema.name).join(', ') : 'نامشخص'}</p>
                     <h5 className="mb-3">توضیحات:</h5>
                     <p>{movieDetails.description}</p>
                 </div>
@@ -76,13 +77,82 @@ const MovieDetails = () => {
     );
 };
 
-const MovieList = ({ movies, onMovieClick }) => (
-    <div className="row">
-        {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} onMovieClick={onMovieClick} />
-        ))}
-    </div>
-);
+const MovieList = ({ movies, onMovieClick,searchTerm }) => {
+    const [genres, setGenres] = useState([]);
+    const [cinemas, setCinemas] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [selectedCinemas, setSelectedCinemas] = useState([]);
+
+    useEffect(() => {
+        // Fetch genres
+        fetch('https://cinema-ticket-api.liara.run/api/v1/genres/')
+            .then(response => response.json())
+            .then(data => setGenres(data))
+            .catch(error => console.error('Error fetching genres:', error));
+
+        // Fetch cinemas
+        fetch('https://cinema-ticket-api.liara.run/api/v1/cinemas/')
+            .then(response => response.json())
+            .then(data => setCinemas(data))
+            .catch(error => console.error('Error fetching cinemas:', error));
+    }, []);
+
+    const handleGenreFilter = (selectedOptions) => {
+        setSelectedGenres(selectedOptions);
+    };
+
+    const handleCinemaFilter = (selectedOptions) => {
+        setSelectedCinemas(selectedOptions);
+    };
+
+    const resetFilters = () => {
+        setSelectedGenres([]);
+        setSelectedCinemas([]);
+    };
+
+    const filteredMovies = movies.filter((movie) =>
+        movie.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (!selectedGenres.length || movie.genres.some(genre => selectedGenres.map(option => option.value).includes(genre.name))) &&
+        (!selectedCinemas.length || movie.cinemas.some(cinema => selectedCinemas.map(option => option.value).includes(cinema.name)))
+    );
+
+    // Options for genres dropdown
+    const genreOptions = genres.map(genre => ({ label: genre.name, value: genre.name }));
+
+    // Options for cinemas dropdown
+    const cinemaOptions = cinemas.map(cinema => ({ label: cinema.name, value: cinema.name }));
+
+    return (
+        <div>
+            <div className="mb-3">
+                <button className="btn btn-light mx-2" onClick={() => resetFilters()}>
+                    حذف فیلترها
+                </button>
+                <Select
+                    isMulti
+                    className="mx-2"
+                    placeholder="فیلتر بر اساس ژانر"
+                    value={selectedGenres}
+                    options={genreOptions}
+                    onChange={handleGenreFilter}
+                />
+                <Select
+                    isMulti
+                    className="mx-2"
+                    placeholder="فیلتر بر اساس سینما"
+                    value={selectedCinemas}
+                    options={cinemaOptions}
+                    onChange={handleCinemaFilter}
+                />
+            </div>
+            <div className="row">
+                {filteredMovies.map((movie) => (
+                    <MovieCard key={movie.id} movie={movie} onMovieClick={onMovieClick} />
+                ))}
+            </div>
+        </div>
+    );
+};
 
 const NavbarComponent = () => (
     <nav dir="rtl" className="navbar navbar-expand-lg navbar-dark bg-danger shadow-sm">
@@ -168,8 +238,7 @@ const App = () => {
 
     return (
         <>
-            <NavbarComponent />
-            <HeroBanner />
+            {/* ... (rest of the component remains unchanged) */}
             <div className="container mt-4">
                 <div className="mb-3">
                     <input
@@ -183,7 +252,7 @@ const App = () => {
                 <Routes>
                     <Route
                         path="/"
-                        element={<MovieList movies={filteredMovies} onMovieClick={handleMovieClick} />}
+                        element={<MovieList movies={filteredMovies} onMovieClick={handleMovieClick} searchTerm={searchTerm} />}
                     />
                     <Route path="/movie/:id" element={<MovieDetails />} />
                     <Route path="/FAQ" element={<FAQ />} />
@@ -191,7 +260,7 @@ const App = () => {
                 </Routes>
             </div>
             <Footer />
-            </>
+        </>
     );
 };
 
