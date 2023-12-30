@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useParams,useNavigate } from "react-router-dom";
 import './App.css'
 import FAQ from "./FAQ";
 import Contact from './Contact-us';
 
 
-const MovieCard = ({ movie }) => (
-    <div className="col-md-4 mb-4">
+const MovieCard = ({ movie, onMovieClick }) => (
+    <div className="col-md-4 mb-4" onClick={() => onMovieClick(movie.id)}>
         <div className="card h-100 shadow">
             <img src="https://via.placeholder.com/150" className="card-img-top" alt="Movie Poster" />
             <div className="card-body">
@@ -73,10 +73,10 @@ const MovieDetails = () => {
     );
 };
 
-const MovieList = ({ movies }) => (
+const MovieList = ({ movies, onMovieClick }) => (
     <div className="row">
-        {movies.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
+        {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} onMovieClick={onMovieClick} />
         ))}
     </div>
 );
@@ -141,28 +141,54 @@ const Footer = () => (
 );
 const App = () => {
     const [movies, setMovies] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('https://cinema-ticket-api.liara.run/api/v1/movies/')
-            .then(response => response.json())
-            .then(data => setMovies(data))
-            .catch(error => console.error('Error fetching data:', error));
+            .then((response) => response.json())
+            .then((data) => setMovies(data))
+            .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
+    const filteredMovies = movies.filter((movie) =>
+        movie.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleMovieClick = (movieId) => {
+        navigate(`/movie/${movieId}`);
+    };
+
     return (
-        <BrowserRouter>
+        <>
             <NavbarComponent />
             <HeroBanner />
             <div className="container mt-4">
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="جستجو در نام فیلم"
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                </div>
                 <Routes>
-                    <Route path="/" element={<MovieList movies={movies} />} />
+                    <Route
+                        path="/"
+                        element={<MovieList movies={filteredMovies} onMovieClick={handleMovieClick} />}
+                    />
                     <Route path="/movie/:id" element={<MovieDetails />} />
                     <Route path="/FAQ" element={<FAQ />} />
-                    <Route path="/Contact-us" element={<Contact />} /> {/* Add the Contact route */}
+                    <Route path="/Contact-us" element={<Contact />} />
                 </Routes>
             </div>
             <Footer />
-        </BrowserRouter>
+            </>
     );
 };
 
