@@ -17,6 +17,7 @@ const MovieCard = ({ movie, onMovieClick }) => (
                 </p>
                 <p className="card-text">کارگردان: {movie.director_name}</p>
                 <p className="card-text">امتیاز کاربران: {movie.rate}</p>
+                <p className="card-text">سینما: {movie.cinemas.length > 0 ? movie.cinemas[0].name : 'نامشخص'}</p>
                 <Link to={`/movie/${movie.id}`} className="btn btn-primary">
                     اطلاعات بیشتر
                 </Link>
@@ -35,6 +36,7 @@ const MovieDetails = () => {
             .then(data => setMovies(data))
             .catch(error => console.error('Error fetching movies:', error));
     }, []);
+
     const movieDetails = movies.find(movie => String(movie.id) === movieId);
 
     if (!movieDetails) {
@@ -65,6 +67,7 @@ const MovieDetails = () => {
                     <p className="mb-3">
                         <strong>امتیاز:</strong> {movieDetails.rate}
                     </p>
+                    <p className="mb-3">سینما: {movieDetails.cinemas.length > 0 ? movieDetails.cinemas.map(cinema => cinema.name).join(', ') : 'نامشخص'}</p>
                     <h5 className="mb-3">توضیحات:</h5>
                     <p>{movieDetails.description}</p>
                 </div>
