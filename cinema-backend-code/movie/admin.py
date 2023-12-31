@@ -7,6 +7,10 @@ from .models import Movie, Genre, Actor
 class GenreAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(Cinema)
+class CinemaAdmin(admin.ModelAdmin):
+    pass
+
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):

@@ -20,10 +20,17 @@ class Actor(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class Cinema(models.Model):
+    name = models.CharField(max_length=256, unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
+    
 
 class Movie(models.Model):
     name = models.CharField(max_length=255, unique=True)
     director_name = models.CharField(max_length=255)
+    cinemas = models.ManyToManyField(Cinema)
     genres = models.ManyToManyField(Genre)
     actors = models.ManyToManyField(Actor)
     rate = models.PositiveSmallIntegerField(default=0)
