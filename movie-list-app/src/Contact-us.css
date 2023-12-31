@@ -1,0 +1,53 @@
+/* Contact.css */
+
+/* Add styles specific to the Contact page */
+.contact-page {
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-page h2 {
+    color: #dc3545;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.contact-page p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.contact-page p:hover {
+    color: #dc3545;
+    transition: color 0.3s ease-in-out;
+}
+
+.contact-page:hover {
+    border: 2px solid #dc3545;
+    transition: border 0.3s ease-in-out;
+}
+
+.contact-page p:nth-child(odd) {
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.contact-page {
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.contact-page p {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.contact-page p:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
+}
