@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'movie.apps.MovieConfig',
     "rest_framework",
     "django_filters",
+    "corsheaders",
+
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://cinema-ticket-front.liara.run",
+    "http://localhost:3000",
 ]
 
 ROOT_URLCONF = 'cinema_ticket.urls'
